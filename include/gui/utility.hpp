@@ -31,4 +31,5 @@ int numberValueInArray(std::array<std::string, 32>, std::string);
 //  search in map for a value
 int numberPositionOfBlankCell( std::map< int, std::string>, std::string);
 
+bool isCellEmpty( std::map<int, std::string> map, int x, int y);
 #endif

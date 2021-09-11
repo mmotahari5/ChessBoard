@@ -1,12 +1,9 @@
 #include <sys/stat.h>//	for search a file exist or no (this library is so fast) => https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-#include <fstream>
 #include "StackPage.hpp"
 #include "Cell.h"
 #include "utility.hpp"
-#include <string>
-#include <vector>
-#include <iostream>
 #include "handler.hpp"
+#include <bits/stdc++.h>
 
 StackPage::StackPage(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &refGlade) : Gtk::Stack(cobject),
 																							pGameBtn(nullptr),
@@ -50,6 +47,7 @@ StackPage::StackPage(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &
 	m_refGlade->get_widget("settingBtnPage2", pSettingBtnPage2);
 	m_refGlade->get_widget("messageLabelDialogConvertPawn", pMessageLabelDialogConvertPawn);
 	m_refGlade-> get_widget( "mainWindow", pWindow);
+	m_refGlade -> get_widget("randomMoveBtn", pRandomMoveBtn);
 
 	nameOfPieces[0] = "wrl";
 	nameOfPieces[1] = "wnl";
@@ -467,6 +465,9 @@ void StackPage::startGameBtn_clicked()
 	//	doual move button get signal and set handler
 	pDoualMoveBtn->signal_clicked().connect(sigc::mem_fun(*this, &StackPage::doualMoveBtn_clicked));
 
+	//	Random move botton get signal
+	pRandomMoveBtn -> signal_clicked().connect( sigc::mem_fun(*this, &StackPage::randomMoveBtn_clicked));
+
 	//	undo btn get signal and set handler
 	pUndoBtn->signal_clicked().connect(sigc::mem_fun(*this, &StackPage::undoBtn_clicked));
 
@@ -628,7 +629,7 @@ bool StackPage::motionVerification()
 			messageDetail += "\nYou can move this chessman to: ";
 
 			auto movements = handler->pChessboard->GetFreeMovements(positionExtraction(cellOrigin));
-			for (int i = 0; i < movements.size(); i++)
+			for (int i = 0; i < static_cast<int>(movements.size()); i++)
 			{
 				messageDetail += generateLocationOfChessBoard(movements.at(i).first, movements.at(i).second);
 				messageDetail += " ";
@@ -646,7 +647,7 @@ bool StackPage::motionVerification()
 			messageDetail += "\nشما میتوانید برای این مهره به مقصد های روبرو بروید: ";
 
 			auto movements = handler->pChessboard->GetFreeMovements(positionExtraction(cellOrigin));
-			for (int i = 0; i < movements.size(); i++)
+			for (int i = 0; i < static_cast<int>(movements.size()); i++)
 			{
 				messageDetail += generateLocationOfChessBoard(movements.at(i).first, movements.at(i).second);
 				messageDetail += " ";
@@ -734,7 +735,7 @@ void StackPage::doualMoveBtn_clicked()
 	{
 	case 0: // Yes button clicked
 		handler->changeRound();
-		handler->get_round_player()->NegativScore -= 30;
+		handler->get_round_player()->NegativScore += 30;
 		handler->get_round_player()->doualMove = true;
 		break;
 	case 1: // No button clicked
@@ -831,7 +832,7 @@ void StackPage::undoBtn_clicked()
 			}
 
 			int i;
-			for (int j = 0; j < nameOfPieces.size(); j++)
+			for (int j = 0; j < static_cast<int>(nameOfPieces.size()); j++)
 			{
 				if (nameOfPieces[j] == str)
 				{
@@ -904,7 +905,7 @@ void StackPage::undoBtn_clicked()
 				}
 			}
 			int i;
-			for (int j = 0; j < nameOfPieces.size(); j++)
+			for (int j = 0; j < static_cast<int>(nameOfPieces.size()); j++)
 			{
 				if (nameOfPieces[j] == str)
 				{
@@ -1087,6 +1088,32 @@ void StackPage::on_languageComboBox_changed()
 			pSecondPLNameNegativScoreLabel->set_label(str);
 			pNegativScoreSecondPL->set_label(std::to_string(handler->player2.NegativScore));
 			pMessageLabelDialogConvertPawn-> set_label("Congratulations, you have managed to get your pawn to the last cell\nNow choose one of the following options to replace your pawn");
+		}
+	}
+}
+
+void StackPage::randomMoveBtn_clicked(){
+	std::pair < std::pair<int, int>, std::pair<int, int>> randomResult;
+	randomResult = handler -> pChessboard -> RandomMove( handler -> get_round_player());
+
+	if(randomResult != std::pair<std::pair<int, int>, std::pair<int, int>>({{8,8}, {8,8}}))
+	{
+		on_i_drag_data_get( numberValueInArray( nameOfPieces, pieceNameByPosition( positionOfPieces, generateLocationOfChessBoard( randomResult.first.first, randomResult.first.second))));
+		
+//		Cell** Board = handler -> pChessboard -> GetBoard();
+//		if(Board[ randomResult.second.first , randomResult.second.second] -> ptr != nullptr)
+//		std::string position = generateLocationOfChessBoard( randomResult.second.first, randomResult.second.second);
+//		auto it1 = positionOfBlankSquars.begin();
+//		auto it2 = positionOfBlankSquars.end();
+//		/*std::map<int, std::string>::const_iterator*/auto itFind = std::find( it1, it2, position);
+//		std::map<int, std::string>::const_iterator itEnd = positionOfBlankSquars.cend();
+		if(isCellEmpty( positionOfBlankSquars, randomResult.second.first, randomResult.second.second))
+		{
+			on_i_cell_drag_data_recieved( numberPositionOfBlankCell( positionOfBlankSquars, generateLocationOfChessBoard( randomResult.second.first, randomResult.second.second)));
+		}
+		else
+		{
+			on_i_chessman_drag_data_recieved( numberValueInArray( nameOfPieces, pieceNameByPosition( positionOfPieces, generateLocationOfChessBoard( randomResult.second.first, randomResult.second.second))));
 		}
 	}
 }

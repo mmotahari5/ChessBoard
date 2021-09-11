@@ -38,7 +38,7 @@ public:
 	std::string cellOrigin, piece, cellDestination;
 
 private:
-	Gtk::Button *pGameBtn, *pExitBtn, *pSettingBtnPage0, *pStartGameBtn, *pExitBtnStack2, *pReloadBtnStack2, *pDoualMoveBtn, *pUndoBtn, *pBackBtnPage3, *pExitBtnPage0, *pSettingBtnPage2;
+	Gtk::Button *pGameBtn, *pExitBtn, *pSettingBtnPage0, *pStartGameBtn, *pExitBtnStack2, *pReloadBtnStack2, *pDoualMoveBtn, *pUndoBtn, *pBackBtnPage3, *pExitBtnPage0, *pSettingBtnPage2, *pRandomMoveBtn;
 	Gtk::Entry *pGameNameEnt, *pPlayerFirstNameEnt, *pPlayerSecondNameEnt;
 	Handler *handler;
 	Gtk::Grid *pBoardGame, *pRemovedPiecesGrid;
@@ -91,6 +91,7 @@ private:
 
 	void doualMoveBtn_clicked();
 	void undoBtn_clicked();
+	void randomMoveBtn_clicked();
 
 	void updateScoreBoard();
 

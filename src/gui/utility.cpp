@@ -108,3 +108,16 @@ int numberPositionOfBlankCell( std::map< int, std::string> map, std::string valu
 	}
 	return -1;
 }
+
+bool isCellEmpty( std::map<int, std::string> map, int x, int y)
+{
+	std::string position = generateLocationOfChessBoard(x, y);
+	for(auto it = map.cbegin(); it != map.cend(); it++)
+	{
+		if((*it).second == position)
+		{
+			return true;
+		}
+	}
+	return false;
+}

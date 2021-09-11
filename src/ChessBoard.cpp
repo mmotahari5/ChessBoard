@@ -203,12 +203,16 @@ std::pair<std::pair<int, int>, std::pair<int, int>> ChessBoard::RandomMove(struc
     std::cout << "\t\tcounter While : " << asd << std::endl;
     //  if cell [i][j] is empty of is inverse color of chessman again create random number for i,j
     std::cout << "\t\t|- Board[i][j].ptr : " << Board[i][j].ptr << std::endl;
-    if (Board[i][j].ptr != nullptr)
-    {
-      break;
-    }
-    std::cout << "\t\t|- Board[i][j].ptr -> Color : " << (int)(Board[i][j].ptr->Color) << "\tp -> ColorOfPlayer: " << (int)(p->ColorOfPlayer) << std::endl;
-    if ((int)(Board[i][j].ptr->Color) == (int)(p->ColorOfPlayer))
+
+		if(Board[i][j].ptr == nullptr)
+		{
+    	i = (rand()) % 8;
+    	j = (rand()) % 8;
+    	std::cout << "\t\tRandomMove last i,j : " << i << ',' << j << std::endl;
+			continue;
+		}
+//    std::cout << "\t\t|- Board[i][j].ptr -> Color : " << (int)(Board[i][j].ptr->Color) << "\tp -> ColorOfPlayer: " << (int)(p->ColorOfPlayer) << std::endl;
+    if (Board[i][j].ptr != nullptr && (int)(Board[i][j].ptr->Color) == (int)(p->ColorOfPlayer))
     {
       break;
     }
@@ -401,7 +405,7 @@ std::pair<std::pair<int, int>, std::pair<int, int>> ChessBoard::RandomMove(struc
   }
 
   std::cout << "\t|-movements can select" << std::endl;
-  for (int i = 0; i < movements.size(); i++)
+  for (int i = 0; i < static_cast<int>( movements.size()); i++)
   {
     std::cout << "\t\t" << movements.at(i).first << ',' << movements.at(i).second << std::endl;
   }
@@ -507,7 +511,7 @@ void ChessBoard::ThreatPlus()
   }
 
   //	scoring
-  for (int i = 0; i < vector.size(); i++)
+  for (int i = 0; i < static_cast<int>( vector.size()); i++)
   {
     if (pStack->handler->get_round() == PlayersColor::White)
     {
