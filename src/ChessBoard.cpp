@@ -190,6 +190,7 @@ void ChessBoard::UndoScoring(struct Player *p) //کسر امتیاز وقتی ک
 std::pair<std::pair<int, int>, std::pair<int, int>> ChessBoard::RandomMove(struct Player *p) // حرکت رندوم که یک پوینتر از بازیکن میگیرد
 {
   std::cout << "\n>>>>>>start ChessBoard::RandomMove(struct Player*);" << std::endl;
+	std::cout << "\t\t|-Player: " << (((p -> ColorOfPlayer) == PlayersColor::White) ? "White" : "Black") << std::endl;
 
   srand(time(0));
   int i = (rand()) % 8;
@@ -389,14 +390,30 @@ std::pair<std::pair<int, int>, std::pair<int, int>> ChessBoard::RandomMove(struc
     if (i > 0)
     {
       movements.push_back({i - 1, j});
+			if (j < 7)
+			{
+				movements.push_back({i - 1, j + 1});
+			}
+			if (j > 0)
+			{
+				movements.push_back({i - 1, j - 1});
+			}
     }
     if (i < 7)
     {
       movements.push_back({i + 1, j});
+			if (j < 7)
+			{
+				movements.push_back({i + 1, j + 1});
+			}
     }
     if (j > 0)
     {
       movements.push_back({i, j - 1});
+			if (i < 7)
+			{
+				movements.push_back({i + 1, j - 1});
+			}
     }
     if (j < 7)
     {

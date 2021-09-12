@@ -1094,6 +1094,7 @@ void StackPage::on_languageComboBox_changed()
 
 void StackPage::randomMoveBtn_clicked(){
 	std::pair < std::pair<int, int>, std::pair<int, int>> randomResult;
+	handler -> changeRound();
 	randomResult = handler -> pChessboard -> RandomMove( handler -> get_round_player());
 
 	if(randomResult != std::pair<std::pair<int, int>, std::pair<int, int>>({{8,8}, {8,8}}))

@@ -50,6 +50,7 @@ void StackPage::on_i_drag_data_get(int i, Gtk::SelectionData &selection_data)
 void StackPage::on_i_drag_data_get(int i)
 {
 	std::cout << "\n>>>>>>>Start StackPage::on_i_drag_data_get( int);" << std::endl;
+	std::cout << "\t|-i = " << i << std::endl;
 	//	Check periority round. White or Black??
 	if (15 >= i /*White chessman*/ && handler->get_round() != PlayersColor::White)
 	{
