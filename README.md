@@ -23,7 +23,7 @@ After install requirements:
 ```
 $ meson setup build && cd build && ninja
 ```
-after that creat a file with name ```./build/ChessAP```
+A file named ```ChessAP``` is then created in ```./build/ChessAP```.
 
 and then for run:
 ```
